@@ -13,38 +13,6 @@ const filesystem: Record<string, string[]> = {
   '/': ['home/', 'etc/', 'usr/', 'var/', 'tmp/'],
 };
 
-const cppSnippets = `#include <iostream>
-#include <vector>
-#include <memory>
-
-template<typename T>
-class SmartPointer {
-private:
-    T* ptr;
-    size_t* ref_count;
-public:
-    explicit SmartPointer(T* p = nullptr) : ptr(p), ref_count(new size_t(1)) {}
-    ~SmartPointer() { release(); }
-    T* operator->() { return ptr; }
-    T& operator*() { return *ptr; }
-};`;
-
-const pythonSnippets = `import numpy as np
-from dataclasses import dataclass
-from typing import Generic, TypeVar
-
-T = TypeVar('T')
-
-@dataclass
-class DataPipeline:
-    stages: list
-    config: dict
-    
-    async def execute(self, data: np.ndarray) -> np.ndarray:
-        for stage in self.stages:
-            data = await stage.process(data)
-        return data`;
-
 export const commandHandlers: Record<string, CommandHandler> = {
   help: {
     help: 'Display available commands',
@@ -61,14 +29,7 @@ export const commandHandlers: Record<string, CommandHandler> = {
   whoami      - Display user info
   sysinfo     - Show system information
   neofetch    - Display system info with ASCII art
-  cmatrix     - Activate Matrix mode
   build       - Run build pipeline
-  monitor     - Show system monitor
-  memory      - Run memory allocator
-  pipeline    - Execute data pipeline
-  htop        - Process monitor
-  gcc [file]  - Compile C++ file
-  python [file]- Run Python file
   status      - Show project status
   about       - About DevFørge`,
       type: 'info',
@@ -99,31 +60,20 @@ export const commandHandlers: Record<string, CommandHandler> = {
     execute: async (args) => {
       const file = args[0];
       if (!file) return { output: 'cat: missing file operand', type: 'error' };
-      if (file.includes('.cpp') || file.includes('.h'))
-        return { output: cppSnippets, type: 'success' };
-      if (file.includes('.py'))
-        return { output: pythonSnippets, type: 'success' };
-      return { output: `// Content of ${file}\n// Binary or unknown format`, type: 'warning' };
+      return { output: `// Content of ${file}\n// (simulated)`, type: 'warning' };
     },
   },
   whoami: {
     help: 'Display user info',
-    execute: async () => ({
-      output: 'devforge-user\nID: dev-042\nGroup: developers\nPermissions: rwx',
-      type: 'info',
-    }),
+    execute: async () => ({ output: 'devforge-user', type: 'info' }),
   },
   sysinfo: {
     help: 'Show system information',
     execute: async () => ({
       output: `OS: DevFørgeOS 24.04 LTS
 Kernel: 6.8.0-devforge
-Architecture: x86_64 + ARM64
 CPU: DevForge Quantum Processor @ 4.2GHz (16 cores)
-Memory: 64GB DDR5 @ 6400MHz
-GPU: DevForge Visual Engine
-Storage: 2TB NVMe SSD
-Uptime: 42 days, 7 hours, 13 minutes`,
+Memory: 64GB`,
       type: 'info',
     }),
   },
@@ -159,9 +109,6 @@ Uptime: 42 days, 7 hours, 13 minutes`,
       output: `╔══════════════════════════════════════╗
 ║        DevFørge v1.0.0              ║
 ║  Elite Developer Workspace          ║
-║  Built with Next.js + TypeScript    ║
-║  Terminal • Editor • Monitor        ║
-║  Memory • Pipeline • Build          ║
 ║  © 2026 DevForge Industries         ║
 ╚══════════════════════════════════════╝`,
       type: 'info',
@@ -174,65 +121,23 @@ Uptime: 42 days, 7 hours, 13 minutes`,
 Status: ● BUILDING
 Branch: main
 Commit: a3f8c92
-Coverage: 94.2%
-Tests: 847 passed, 0 failed
-Build Time: 2.3s
-Last Deploy: 3 minutes ago`,
+Coverage: 94.2%`,
       type: 'info',
     }),
   },
-  gcc: {
-    help: 'Compile C++ file',
-    execute: async (args) => {
-      const file = args[0];
-      if (!file) return { output: 'gcc: fatal error: no input files', type: 'error' };
-      return {
-        output: `[Compiling] ${file}...
-[1/3] Preprocessing... ✓
-[2/3] Compilation... ✓
-[3/3] Linking... ✓
-Output: a.out (48KB)
-Warnings: 0
-Errors: 0
-Compilation successful! ✓`,
-        type: 'success',
-      };
-    },
-  },
-  python: {
-    help: 'Run Python file',
-    execute: async (args) => {
-      const file = args[0];
-      if (!file) return { output: 'python: missing file argument', type: 'error' };
-      return {
-        output: `Executing: ${file}
-Python 3.12.0
->>> import numpy as np
->>> data = np.random.randn(1000, 10)
->>> result = pipeline.fit_transform(data)
->>> print(f"Shape: {result.shape}")
-Shape: (1000, 10)
-Execution time: 0.042s
-Process finished with exit code 0`,
-        type: 'success',
-      };
-    },
-  },
-  htop: {
-    help: 'Process monitor',
+  build: {
+    help: 'Run build pipeline',
     execute: async () => ({
-      output: `  PID USER      PRI  NI  VIRT   RES   SHR S CPU% MEM%   TIME+  Command
- 1042 dev        20   0  4.2G  1.8G  892M R 12.5  2.8  0:42.17 node
-  876 dev        20   0  2.1G  890M  445M S  5.2  1.4  0:18.33 vscode
-  421 root       20   0  1.5G  567M  234M S  2.1  0.9  0:03.42 docker
-  128 dev        20   0  8.7G  3.2G  1.1G S  0.5  5.1  1:23.17 chrome
-    1 root       20   0   98M   45M   12M S  0.0  0.1  0:00.42 systemd`,
-      type: 'info',
+      output: `[Build] Starting...
+[1/4] Linting... ✓
+[2/4] Type checking... ✓
+[3/4] Compiling... ✓
+[4/4] Testing... ✓
+Build successful!`,
+      type: 'success',
     }),
   },
 };
-
-const simpleCommands = ['clear', 'pwd', 'whoami', 'sysinfo', 'neofetch', 'date', 'about', 'status', 'htop'];
 
 export async function executeCommand(
   input: string,
@@ -244,12 +149,6 @@ export async function executeCommand(
 
   const handler = commandHandlers[cmd];
   if (handler) {
-    const result = await handler.execute(args, workingDirectory);
-    return result;
-  }
-
-  if (simpleCommands.includes(cmd)) {
-    const handler = commandHandlers[cmd]!;
     return handler.execute(args, workingDirectory);
   }
 
