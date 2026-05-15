@@ -10,10 +10,10 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
-        display: ['Geist', 'Inter', 'sans-serif'],
-      },
+  sans: ['var(--font-sans)', 'Inter', 'system-ui', 'sans-serif'],
+  mono: ['var(--font-mono)', 'JetBrains Mono', 'Fira Code', 'monospace'],
+  display: ['var(--font-sans)', 'Geist', 'Inter', 'sans-serif'],
+},
       colors: {
         terminal: {
           green: '#00FF41',
