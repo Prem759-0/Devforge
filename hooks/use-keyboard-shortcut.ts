@@ -20,7 +20,6 @@ export function useKeyboardShortcut(combo: KeyCombo, callback: () => void, enabl
         !!e.metaKey === !!combo.meta &&
         !!e.shiftKey === !!combo.shift &&
         !!e.altKey === !!combo.alt;
-
       if (matches) {
         e.preventDefault();
         callback();
