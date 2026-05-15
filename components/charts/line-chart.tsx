@@ -26,9 +26,7 @@ export function LineChart({ data, dataKey, color, height = 300, xAxisKey = 'name
         <CartesianGrid strokeDasharray="3 3" stroke="hsl(220 15% 16%)" />
         <XAxis dataKey={xAxisKey} tick={{ fontSize: 11, fill: 'hsl(220 15% 50%)' }} axisLine={false} tickLine={false} />
         <YAxis tick={{ fontSize: 11, fill: 'hsl(220 15% 50%)' }} axisLine={false} tickLine={false} />
-        <Tooltip
-          contentStyle={{ backgroundColor: 'hsl(220 15% 10%)', border: '1px solid hsl(220 15% 20%)', borderRadius: '8px' }}
-        />
+        <Tooltip contentStyle={{ backgroundColor: 'hsl(220 15% 10%)', border: '1px solid hsl(220 15% 20%)', borderRadius: '8px' }} />
         <Line type="monotone" dataKey={dataKey} stroke={color} strokeWidth={2} dot={false} />
       </RechartsLine>
     </ResponsiveContainer>
