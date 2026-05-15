@@ -2,14 +2,13 @@
 
 import React from 'react';
 import { useUIStore } from '@/store/ui-store';
-import { useSystemStore } from '@/store/terminal-store'; // we'll use terminal store for a simple status; alternatively create a small global store
 import { useBuildStore } from '@/store/build-store';
 import { Activity, GitBranch, Clock, Cpu } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export function StatusBar() {
   const { statusBarVisible, sidebarOpen, toggleSidebar, settings } = useUIStore();
-  const builds = useBuildStore?.((s) => s.builds) || []; // safe access
+  const builds = useBuildStore((s) => s.builds);
   const latestBuild = builds[0];
   const buildStatus = latestBuild?.status || 'idle';
 
