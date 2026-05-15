@@ -10,10 +10,10 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-  sans: ['var(--font-sans)', 'Inter', 'system-ui', 'sans-serif'],
-  mono: ['var(--font-mono)', 'JetBrains Mono', 'Fira Code', 'monospace'],
-  display: ['var(--font-sans)', 'Geist', 'Inter', 'sans-serif'],
-},
+        sans: ['var(--font-sans)', 'Inter', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-mono)', 'JetBrains Mono', 'Fira Code', 'monospace'],
+        display: ['var(--font-sans)', 'Geist', 'Inter', 'sans-serif'],
+      },
       colors: {
         terminal: {
           green: '#00FF41',
@@ -32,7 +32,7 @@ const config: Config = {
         },
         border: {
           subtle: 'hsl(220 15% 16%)',
-          DEFAULT: 'hsl(220 15% 22%)',
+          DEFAULT: 'hsl(220 15% 18%)',
           strong: 'hsl(220 15% 28%)',
         },
       },
@@ -45,7 +45,8 @@ const config: Config = {
         'matrix-rain': 'matrixRain 2s linear infinite',
         'gradient-shift': 'gradientShift 8s ease infinite',
         'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
-        'typewriter': 'typewriter 3s steps(40) forwards',
+        shimmer: 'shimmer 2s infinite',
+        float: 'float 6s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
@@ -56,6 +57,8 @@ const config: Config = {
         matrixRain: { '0%': { transform: 'translateY(-100%)' }, '100%': { transform: 'translateY(100vh)' } },
         gradientShift: { '0%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' }, '100%': { backgroundPosition: '0% 50%' } },
         pulseGlow: { '0%, 100%': { boxShadow: '0 0 20px rgba(0, 255, 65, 0.3)' }, '50%': { boxShadow: '0 0 40px rgba(0, 255, 65, 0.6)' } },
+        shimmer: { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(100%)' } },
+        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
       },
       backdropBlur: { xs: '2px' },
       backgroundImage: {
