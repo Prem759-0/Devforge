@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useCallback, useRef } from 'react';
 import { useUIStore } from '@/store/ui-store';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface KeyboardContextType {
   registerShortcut: (keys: string, callback: () => void) => void;
@@ -18,7 +18,6 @@ export function useKeyboard() {
 
 export function KeyboardProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const pathname = usePathname();
   const { setCommandPaletteOpen, toggleSidebar } = useUIStore();
   const shortcutsRef = useRef<Map<string, () => void>>(new Map());
 
