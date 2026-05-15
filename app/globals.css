@@ -21,17 +21,14 @@
     --destructive: 0 100% 55%;
     --destructive-foreground: 220 15% 93%;
     --border: 220 15% 18%;
+    --border-subtle: 220 15% 16%;
+    --border-strong: 220 15% 28%;
     --input: 220 15% 14%;
     --ring: 140 100% 50%;
     --radius: 0.75rem;
     --sidebar: 220 15% 8%;
     --sidebar-foreground: 220 15% 80%;
     --sidebar-accent: 140 100% 50%;
-    --terminal-green: #00FF41;
-    --terminal-cyan: #00E5FF;
-    --terminal-purple: #BD00FF;
-    --terminal-yellow: #FFD600;
-    --terminal-red: #FF1744;
   }
 
   .light {
@@ -49,13 +46,16 @@
     --muted-foreground: 220 15% 45%;
     --accent: 190 80% 40%;
     --accent-foreground: 0 0% 100%;
+    --destructive: 0 100% 55%;
+    --destructive-foreground: 220 15% 93%;
     --border: 220 15% 85%;
+    --border-subtle: 220 15% 80%;
+    --border-strong: 220 15% 60%;
     --input: 220 15% 90%;
     --ring: 140 80% 35%;
     --sidebar: 220 15% 95%;
     --sidebar-foreground: 220 15% 20%;
-    --terminal-green: #00A030;
-    --terminal-cyan: #0088AA;
+    --sidebar-accent: 140 80% 35%;
   }
 
   .high-contrast {
@@ -63,10 +63,26 @@
     --foreground: 0 0% 100%;
     --card: 0 0% 5%;
     --card-foreground: 0 0% 100%;
-    --border: 0 0% 40%;
-    --ring: 60 100% 50%;
+    --popover: 0 0% 0%;
+    --popover-foreground: 0 0% 100%;
     --primary: 60 100% 50%;
     --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 60 100% 50%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 40%;
+    --border-subtle: 0 0% 30%;
+    --border-strong: 0 0% 50%;
+    --input: 0 0% 20%;
+    --ring: 60 100% 50%;
+    --sidebar: 0 0% 5%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-accent: 60 100% 50%;
   }
 
   * {
@@ -75,11 +91,12 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: 'ss01', 'ss02', 'cv01', 'cv02', 'cv03';
+    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
   }
 
   ::selection {
-    @apply bg-terminal-green/30 text-terminal-green;
+    background: hsl(var(--primary) / 0.3);
+    color: hsl(var(--primary));
   }
 
   ::-webkit-scrollbar {
@@ -88,15 +105,16 @@
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-transparent;
+    background: transparent;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-border rounded-full;
+    background: hsl(var(--border));
+    border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-border-strong;
+    background: hsl(var(--border-strong));
   }
 }
 
@@ -106,14 +124,19 @@
   }
 
   .terminal-cursor::after {
-    content: '█';
+    content: "█";
     @apply animate-terminal-blink text-terminal-green;
   }
 
   .gradient-border {
     position: relative;
     border-radius: 0.75rem;
-    background: linear-gradient(135deg, var(--terminal-green), var(--terminal-cyan), var(--terminal-purple));
+    background: linear-gradient(
+      135deg,
+      var(--terminal-green, #00ff41),
+      var(--terminal-cyan, #00e5ff),
+      var(--terminal-purple, #bd00ff)
+    );
     padding: 1px;
   }
 
@@ -127,10 +150,14 @@
   }
 
   .spotlight::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 255, 65, 0.06), transparent 40%);
+    background: radial-gradient(
+      600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(0, 255, 65, 0.06),
+      transparent 40%
+    );
     pointer-events: none;
     z-index: 1;
   }
@@ -145,10 +172,15 @@
   }
 
   .shimmer::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent
+    );
     animation: shimmer 2s infinite;
   }
 }
