@@ -43,17 +43,9 @@ export const useUIStore = create<UIState>()(
       toggleCommandPalette: () => set((s) => ({ commandPaletteOpen: !s.commandPaletteOpen })),
       setCommandPaletteOpen: (open) => set({ commandPaletteOpen: open }),
       toggleStatusBar: () => set((s) => ({ statusBarVisible: !s.statusBarVisible })),
-      updateSettings: (newSettings) =>
-        set((s) => ({ settings: { ...s.settings, ...newSettings } })),
+      updateSettings: (newSettings) => set((s) => ({ settings: { ...s.settings, ...newSettings } })),
       resetSettings: () => set({ settings: defaultSettings }),
     }),
-    {
-      name: 'devforge-ui',
-      partialize: (state) => ({
-        sidebarOpen: state.sidebarOpen,
-        statusBarVisible: state.statusBarVisible,
-        settings: state.settings,
-      }),
-    }
+    { name: 'devforge-ui' }
   )
 );
