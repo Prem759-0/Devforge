@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Build } from '@/types/build';
+import type { Build } from '@/types';
 import { generateId } from '@/lib/utils';
 
 interface BuildState {
@@ -8,9 +8,25 @@ interface BuildState {
   startBuild: (buildId: string) => void;
 }
 
-// Simple placeholder implementation (full version earlier)
 export const useBuildStore = create<BuildState>((set, get) => ({
-  builds: [],
+  builds: [
+    {
+      id: 'build-1',
+      number: 1,
+      project: 'DevFørge',
+      status: 'success',
+      trigger: 'push',
+      branch: 'main',
+      commit: 'a3f8c92',
+      commitMessage: 'feat: add dashboard',
+      author: 'devforge-user',
+      avatarUrl: '',
+      stages: [],
+      artifacts: [],
+      environment: 'production',
+      tags: ['latest'],
+    },
+  ],
   addBuild: (input) => {
     const build: Build = {
       ...input,
