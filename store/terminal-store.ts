@@ -62,20 +62,7 @@ export const useTerminalStore = create<TerminalState>()(
         set((s) => ({
           tabs: s.tabs.map((t) =>
             t.id === tabId
-              ? {
-                  ...t,
-                  commands: [
-                    ...t.commands,
-                    {
-                      id: generateId(),
-                      input,
-                      output,
-                      timestamp: new Date(),
-                      type,
-                      workingDirectory: t.workingDirectory,
-                    },
-                  ],
-                }
+              ? { ...t, commands: [...t.commands, { id: generateId(), input, output, timestamp: new Date(), type, workingDirectory: t.workingDirectory }] }
               : t
           ),
         })),
@@ -92,15 +79,6 @@ export const useTerminalStore = create<TerminalState>()(
         return state.tabs.find((t) => t.id === state.activeTabId);
       },
     }),
-    {
-      name: 'devforge-terminal',
-      partialize: (state) => ({
-        tabs: state.tabs.map((t) => ({
-          ...t,
-          commands: t.commands.slice(-500), // Keep last 500 commands
-        })),
-        activeTabId: state.activeTabId,
-      }),
-    }
+    { name: 'devforge-terminal' }
   )
 );
