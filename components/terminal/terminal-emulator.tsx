@@ -5,8 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTerminalStore } from '@/store/terminal-store';
 import { executeCommand } from '@/data/commands';
 import { cn, formatTimestamp } from '@/lib/utils';
-import { TerminalHeader } from './terminal-header';
-import { X, Plus, Trash2, Maximize2, Minimize2 } from 'lucide-react';
 
 export function TerminalEmulator() {
   const {
@@ -23,7 +21,6 @@ export function TerminalEmulator() {
 
   const [input, setInput] = useState('');
   const [historyIndex, setHistoryIndex] = useState(-1);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
 
@@ -43,21 +40,16 @@ export function TerminalEmulator() {
   const handleCommand = useCallback(
     async (cmd: string) => {
       if (!activeTabId || !cmd.trim()) return;
-
       const result = await executeCommand(cmd, activeTab?.workingDirectory || '~/devforge');
-
       if (result.output === '__CLEAR__') {
         clearTab(activeTabId);
         return;
       }
-
       addCommand(activeTabId, cmd, result.output, result.type);
-
       if (cmd.startsWith('cd ')) {
         const newDir = cmd.substring(3).trim();
         updateWorkingDirectory(activeTabId, newDir);
       }
-
       setHistoryIndex(-1);
     },
     [activeTabId, activeTab?.workingDirectory, addCommand, clearTab, updateWorkingDirectory]
@@ -90,32 +82,43 @@ export function TerminalEmulator() {
     }
   };
 
-  const handleTabClick = (tabId: string) => {
-    setActiveTab(tabId);
-  };
-
   return (
-    <div
-      className={cn(
-        'flex flex-col h-full bg-surface border border-border rounded-xl overflow-hidden transition-all duration-300',
-        isFullscreen && 'fixed inset-4 z-50'
-      )}
-    >
-      <TerminalHeader
-        tabs={tabs}
-        activeTabId={activeTabId}
-        onTabClick={handleTabClick}
-        onTabClose={removeTab}
-        onNewTab={() => addTab()}
-        isFullscreen={isFullscreen}
-        onToggleFullscreen={() => setIsFullscreen(!isFullscreen)}
-      />
+    <div className="flex flex-col h-full bg-surface border border-border rounded-xl overflow-hidden">
+      {/* Tab bar */}
+      <div className="flex items-center bg-surface-elevated border-b border-border px-2 gap-1 h-9">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={cn(
+              'px-3 h-7 text-xs font-mono rounded-t-md flex items-center gap-2 transition-colors',
+              tab.id === activeTabId
+                ? 'bg-surface text-terminal-green border-t border-x border-border'
+                : 'text-muted-foreground hover:text-foreground'
+            )}
+          >
+            {tab.name}
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+                removeTab(tab.id);
+              }}
+              className="ml-1 hover:text-terminal-red cursor-pointer"
+            >
+              ×
+            </span>
+          </button>
+        ))}
+        <button
+          onClick={() => addTab()}
+          className="px-2 h-7 text-xs text-muted-foreground hover:text-foreground"
+        >
+          +
+        </button>
+      </div>
 
-      <div
-        ref={outputRef}
-        className="flex-1 overflow-y-auto p-4 font-mono text-sm leading-relaxed cursor-text"
-        onClick={() => inputRef.current?.focus()}
-      >
+      {/* Output */}
+      <div ref={outputRef} className="flex-1 overflow-y-auto p-4 font-mono text-sm leading-relaxed cursor-text" onClick={() => inputRef.current?.focus()}>
         <AnimatePresence mode="popLayout">
           {activeTab?.commands.map((cmd) => (
             <motion.div
@@ -149,6 +152,7 @@ export function TerminalEmulator() {
           ))}
         </AnimatePresence>
 
+        {/* Input line */}
         <div className="flex items-center gap-2 mt-1">
           <span className="text-terminal-cyan">❯</span>
           <span className="text-terminal-purple">{activeTab?.workingDirectory || '~'}</span>
