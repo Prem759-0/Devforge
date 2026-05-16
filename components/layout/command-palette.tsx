@@ -33,7 +33,7 @@ interface CommandItem {
 
 export function CommandPalette() {
   const router = useRouter();
-  const { commandPaletteOpen, setCommandPaletteOpen, settings, updateSettings } = useUIStore();
+ const { commandPaletteOpen, setCommandPaletteOpen, updateSettings } = useUIStore();
   const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
 
