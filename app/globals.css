@@ -85,17 +85,23 @@
     --sidebar-accent: 60 100% 50%;
   }
 
+  /* Base body styles – using plain CSS variables to avoid Tailwind JIT issues */
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
+    border-style: solid;
+    border-width: 0;
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
   }
 
   ::selection {
-    background: hsl(var(--primary) / 0.3);
+    background-color: hsl(var(--primary) / 0.3);
     color: hsl(var(--primary));
   }
 
@@ -120,12 +126,17 @@
 
 @layer components {
   .glass-panel {
-    @apply bg-surface-glass backdrop-blur-xl border border-border-subtle rounded-xl shadow-2xl;
+    background-color: hsla(220 15% 12% / 0.7);
+    backdrop-filter: blur(24px);
+    border: 1px solid hsl(var(--border-subtle));
+    border-radius: 0.75rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   }
 
   .terminal-cursor::after {
     content: "█";
-    @apply animate-terminal-blink text-terminal-green;
+    animation: blink 1s step-end infinite;
+    color: #00FF41;
   }
 
   .gradient-border {
@@ -133,15 +144,18 @@
     border-radius: 0.75rem;
     background: linear-gradient(
       135deg,
-      var(--terminal-green, #00ff41),
-      var(--terminal-cyan, #00e5ff),
-      var(--terminal-purple, #bd00ff)
+      #00FF41,
+      #00E5FF,
+      #BD00FF
     );
     padding: 1px;
   }
 
   .gradient-border > * {
-    @apply bg-surface rounded-xl h-full w-full;
+    background-color: hsl(var(--card));
+    border-radius: 0.75rem;
+    height: 100%;
+    width: 100%;
   }
 
   .spotlight {
@@ -187,6 +201,9 @@
 
 @layer utilities {
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-terminal-green via-terminal-cyan to-terminal-purple;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right, #00FF41, #00E5FF, #BD00FF);
   }
 }
