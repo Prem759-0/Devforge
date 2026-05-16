@@ -6,7 +6,7 @@ import { Card } from '@/components/ui/card';
 import { AnimatedCounter } from '@/components/shared/animated-counter';
 import { SpotlightCard } from '@/components/shared/spotlight-card';
 import { TiltCard } from '@/components/shared/tilt-card';
-import { AreaChart, BarChart, LineChart } from '@/components/charts';
+import { AreaChart, LineChart } from '@/components/charts';
 import {
   Terminal,
   GitBranch,
